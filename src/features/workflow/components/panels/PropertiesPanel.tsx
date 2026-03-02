@@ -21,10 +21,8 @@ export default function PropertiesPanel() {
     })),
   );
 
-  // Tìm node đang được chọn
   const selectedNode = nodes.find((node) => node.selected);
 
-  // Giao diện khi chưa chọn Node nào
   if (!selectedNode) {
     return (
       <aside className="w-80 border-l border-slate-200 bg-slate-50 flex flex-col shadow-sm z-10 hidden md:flex">
@@ -42,7 +40,6 @@ export default function PropertiesPanel() {
     );
   }
 
-  // Các hàm xử lý sự kiện
   const handleLabelChange = (e: ChangeEvent<HTMLInputElement>) => {
     updateNodeData(selectedNode.id, { label: e.target.value });
   };
@@ -57,7 +54,6 @@ export default function PropertiesPanel() {
 
   return (
     <aside className="w-80 border-l border-slate-200 bg-white flex flex-col shadow-sm z-10 transition-all overflow-y-auto">
-      {/* Header của Panel */}
       <div className="p-4 border-b border-slate-100 flex justify-between items-center sticky top-0 bg-white z-10">
         <div className="flex items-center gap-2 text-slate-800">
           <Settings2 size={18} />
@@ -69,39 +65,34 @@ export default function PropertiesPanel() {
       </div>
 
       <div className="p-4 flex flex-col gap-5">
-        {/* CHỈ HIỂN THỊ BẢNG CHỌN MÀU NẾU LÀ SHAPE NODE */}
-        {selectedNode.type === "shapeNode" && (
-          <div className="flex flex-col gap-2 p-3 bg-slate-50 border border-slate-100 rounded-lg">
-            <div className="flex items-center gap-2 text-slate-600 mb-1">
-              <Palette size={14} />
-              <label className="text-xs font-bold uppercase tracking-wider">
-                Fill Color
-              </label>
-            </div>
-            <div className="flex items-center gap-2 flex-wrap">
-              {PRESET_COLORS.map((color) => {
-                const isActive =
-                  selectedNode.data.color === color ||
-                  (!selectedNode.data.color && color === "#ffffff");
-                return (
-                  <button
-                    key={color}
-                    onClick={() => handleColorChange(color)}
-                    className={`w-8 h-8 rounded-full border-2 transition-all ${
-                      isActive
-                        ? "border-blue-500 scale-110 shadow-md"
-                        : "border-slate-300 hover:scale-110 hover:shadow-sm"
-                    }`}
-                    style={{ backgroundColor: color }}
-                    title={color}
-                  />
-                );
-              })}
-            </div>
+        <div className="flex flex-col gap-2 p-3 bg-slate-50 border border-slate-100 rounded-lg">
+          <div className="flex items-center gap-2 text-slate-600 mb-1">
+            <Palette size={14} />
+            <label className="text-xs font-bold uppercase tracking-wider">
+              Fill Color
+            </label>
           </div>
-        )}
-
-        {/* Input: Node Label */}
+          <div className="flex items-center gap-2 flex-wrap">
+            {PRESET_COLORS.map((color) => {
+              const isActive =
+                selectedNode.data.color === color ||
+                (!selectedNode.data.color && color === "#ffffff");
+              return (
+                <button
+                  key={color}
+                  onClick={() => handleColorChange(color)}
+                  className={`w-8 h-8 rounded-full border-2 transition-all ${
+                    isActive
+                      ? "border-blue-500 scale-110 shadow-md"
+                      : "border-slate-300 hover:scale-110 hover:shadow-sm"
+                  }`}
+                  style={{ backgroundColor: color }}
+                  title={color}
+                />
+              );
+            })}
+          </div>
+        </div>
         <div className="flex flex-col gap-1.5">
           <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">
             Node Label
@@ -114,8 +105,6 @@ export default function PropertiesPanel() {
             placeholder="Enter node label..."
           />
         </div>
-
-        {/* Input: Description */}
         <div className="flex flex-col gap-1.5">
           <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">
             Description
@@ -128,29 +117,6 @@ export default function PropertiesPanel() {
             placeholder="Enter node description..."
           />
         </div>
-
-        {/* Hiển thị Trạng thái (Chỉ hợp lý cho các Node xử lý Logic) */}
-        {selectedNode.type !== "shapeNode" && (
-          <div className="flex flex-col gap-1.5 mt-2 pt-4 border-t border-slate-100">
-            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-              Status
-            </label>
-            <div className="flex items-center gap-2">
-              <div
-                className={`w-2.5 h-2.5 rounded-full ${
-                  selectedNode.data.status === "success"
-                    ? "bg-green-500"
-                    : selectedNode.data.status === "error"
-                      ? "bg-red-500"
-                      : "bg-slate-300"
-                }`}
-              ></div>
-              <span className="text-sm font-medium text-slate-700 capitalize">
-                {selectedNode.data.status || "idle"}
-              </span>
-            </div>
-          </div>
-        )}
       </div>
     </aside>
   );

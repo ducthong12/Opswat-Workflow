@@ -14,12 +14,11 @@ import type { WorkflowNodeType, NodeData } from "../../../../types/workflow";
 export default function Sidebar() {
   const [activeMenu, setActiveMenu] = useState<"nodes" | "shapes" | null>(null);
 
-  // Cập nhật hàm onDragStart để nhận thêm shapeType
   const onDragStart = (
     event: DragEvent,
     nodeType: WorkflowNodeType,
     label: string,
-    shapeType?: NodeData["shapeType"], // Tham số mới
+    shapeType?: NodeData["shapeType"],
   ) => {
     event.dataTransfer.setData("application/reactflow/type", nodeType);
     event.dataTransfer.setData("application/reactflow/label", label);
@@ -35,7 +34,6 @@ export default function Sidebar() {
 
   return (
     <aside className="absolute left-6 top-1/2 -translate-y-1/2 z-50 flex items-start gap-3">
-      {/* 1. THANH CÔNG CỤ CHÍNH */}
       <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-1.5 flex flex-col gap-1">
         <button
           onClick={() => setActiveMenu(null)}
@@ -48,10 +46,7 @@ export default function Sidebar() {
         >
           <MousePointer2 size={20} />
         </button>
-
         <div className="w-6 h-px bg-slate-200 mx-auto my-1"></div>
-
-        {/* Nút mở Menu Khối Basic (Shapes) */}
         <button
           onClick={() => toggleMenu("shapes")}
           className={`p-2.5 rounded-lg transition-colors flex items-center justify-center relative ${
@@ -64,8 +59,6 @@ export default function Sidebar() {
           <Circle size={20} />
           <div className="absolute right-1 bottom-1 w-1.5 h-1.5 bg-slate-400 rounded-full"></div>
         </button>
-
-        {/* Nút mở Menu Logic Nodes */}
         <button
           onClick={() => toggleMenu("nodes")}
           className={`p-2.5 rounded-lg transition-colors flex items-center justify-center relative ${
@@ -79,8 +72,6 @@ export default function Sidebar() {
           <div className="absolute right-1 bottom-1 w-1.5 h-1.5 bg-slate-400 rounded-full"></div>
         </button>
       </div>
-
-      {/* 2. BẢNG MENU PHỤ: BASIC SHAPES */}
       {activeMenu === "shapes" && (
         <div className="bg-white rounded-xl shadow-xl border border-slate-200 w-48 flex flex-col overflow-hidden animate-in fade-in slide-in-from-left-4 duration-200">
           <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100 bg-slate-50/50">
@@ -93,7 +84,6 @@ export default function Sidebar() {
             </button>
           </div>
           <div className="p-3 grid grid-cols-2 gap-2">
-            {/* Kéo thả Hình Chữ Nhật */}
             <div
               className="flex flex-col items-center justify-center gap-2 p-3 border border-slate-200 rounded-lg cursor-grab hover:bg-slate-50 hover:border-blue-400 transition-all"
               onDragStart={(e) =>
@@ -106,8 +96,6 @@ export default function Sidebar() {
                 Square
               </span>
             </div>
-
-            {/* Kéo thả Hình Tròn */}
             <div
               className="flex flex-col items-center justify-center gap-2 p-3 border border-slate-200 rounded-lg cursor-grab hover:bg-slate-50 hover:border-blue-400 transition-all"
               onDragStart={(e) =>
@@ -120,8 +108,6 @@ export default function Sidebar() {
                 Circle
               </span>
             </div>
-
-            {/* Kéo thả Hình Thoi */}
             <div
               className="flex flex-col items-center justify-center gap-2 p-3 border border-slate-200 rounded-lg cursor-grab hover:bg-slate-50 hover:border-blue-400 transition-all col-span-2"
               onDragStart={(e) =>

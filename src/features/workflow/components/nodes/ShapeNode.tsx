@@ -4,21 +4,8 @@ import type { AppNode } from "../../../../types/workflow";
 
 export default function ShapeNode({ data, selected }: NodeProps<AppNode>) {
   const shape = data.shapeType || "rectangle";
-  const isDiamond = shape === "diamond";
-
-  // Lấy màu nền từ data (do Properties Panel đẩy sang)
   const bgColor = (data.color as string) || "#ffffff";
-
-  const borderClass = selected
-    ? "border-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.3)]"
-    : "border-slate-400 hover:border-blue-400";
-
-  const shapeClass =
-    shape === "circle"
-      ? "rounded-full"
-      : shape === "diamond"
-        ? "rotate-45 rounded-sm"
-        : "rounded-md";
+  const strokeColor = selected ? "#3b82f6" : "#94a3b8";
 
   return (
     <>
@@ -34,21 +21,37 @@ export default function ShapeNode({ data, selected }: NodeProps<AppNode>) {
           border: "2px solid #fff",
         }}
       />
-
-      {/* Bao bọc Node bằng w-full h-full để nó co giãn bám theo khung Resizer */}
       <div className="relative w-full h-full min-w-[80px] min-h-[80px] flex items-center justify-center">
-        {/* Lớp Nền (Hiển thị hình dáng và màu sắc) */}
-        <div
-          className={`absolute inset-0 border-2 ${shapeClass} ${borderClass} transition-colors duration-200`}
-          style={{ backgroundColor: bgColor }}
-        />
-
-        {/* Lớp Nội dung Text */}
+        {shape === "diamond" ? (
+          <svg
+            className="absolute inset-0 w-full h-full overflow-visible"
+            preserveAspectRatio="none"
+            viewBox="0 0 100 100"
+          >
+            <polygon
+              points="50,0 100,50 50,100 0,50"
+              fill={bgColor}
+              stroke={strokeColor}
+              strokeWidth="2"
+              vectorEffect="non-scaling-stroke"
+              className="transition-colors duration-200"
+            />
+          </svg>
+        ) : (
+          <div
+            className={`absolute inset-0 border-2 transition-colors duration-200 ${
+              shape === "circle" ? "rounded-full" : "rounded-md"
+            } ${
+              selected
+                ? "border-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.2)]"
+                : "border-slate-400 hover:border-blue-400"
+            }`}
+            style={{ backgroundColor: bgColor }}
+          />
+        )}
         <div className="relative z-10 text-sm font-bold text-slate-800 text-center px-4 pointer-events-none break-words max-w-full max-h-full overflow-hidden flex items-center justify-center">
           {data.label}
         </div>
-
-        {/* 4 Điểm nối dây (Handles) */}
         <Handle
           type="target"
           position={Position.Top}

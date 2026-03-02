@@ -10,3 +10,14 @@ body,
   margin: 0;
   padding: 0;
 }
+
+.minimap-diamond {
+  transform: rotate(45deg) scale(0.7);
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+.minimap-circle {
+  rx: 100px;
+  ry: 100px;
+}

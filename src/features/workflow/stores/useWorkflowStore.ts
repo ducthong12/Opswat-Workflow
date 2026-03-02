@@ -10,19 +10,6 @@ import {
   type NodeChange,
 } from "@xyflow/react";
 
-// const initialNodes: AppNode[] = [
-//   {
-//     id: "node-start",
-//     type: "taskNode",
-//     position: { x: 250, y: 100 },
-//     data: {
-//       label: "Start Workflow",
-//       description: "Workflow initialization trigger",
-//       status: "success",
-//     },
-//   },
-// ];
-
 export const useWorkflowStore = create<WorkflowState>((set, get) => ({
   nodes: [],
   edges: [],

@@ -106,10 +106,31 @@ export default function WorkflowCanvas() {
         />
         <Controls />
         <MiniMap
-          nodeStrokeColor={(n) =>
-            n.type === "taskNode" ? "#3b82f6" : "#cbd5e1"
-          }
-          nodeColor={() => "#eff6ff"}
+          nodeColor={(n) => {
+            if (n.type === "shapeNode")
+              return (n.data.color as string) || "#ffffff";
+            if (n.type === "taskNode") return "#eff6ff";
+            if (n.type === "conditionNode") return "#fffbeb";
+            return "#ffffff";
+          }}
+          nodeStrokeColor={(n) => {
+            if (n.type === "shapeNode")
+              return n.selected ? "#3b82f6" : "#94a3b8";
+            if (n.type === "taskNode")
+              return n.selected ? "#3b82f6" : "#bfdbfe";
+            if (n.type === "conditionNode")
+              return n.selected ? "#f59e0b" : "#fde68a";
+            return "#cbd5e1";
+          }}
+          nodeClassName={(n) => {
+            if (n.type === "shapeNode" && n.data.shapeType === "diamond")
+              return "minimap-diamond";
+            else if (n.type === "shapeNode" && n.data.shapeType === "circle")
+              return "minimap-circle";
+            else return "";
+          }}
+          maskColor="rgba(241, 245, 249, 0.7)"
+          className="border border-slate-200 rounded-lg shadow-sm bg-white"
         />
       </ReactFlow>
     </div>
