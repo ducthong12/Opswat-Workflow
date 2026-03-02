@@ -1,6 +1,53 @@
 // src/features/workflow/components/nodes/ShapeNode.tsx
 import { Handle, Position, NodeResizer, type NodeProps } from "@xyflow/react";
 import type { AppNode } from "../../../../types/workflow";
+import ShapeDiamond from "./ShapeDiamond";
+import ShapeTriangle from "./ShapeTriangle";
+import ShapeDatabase from "./ShapeDatabase";
+import ShapeCube from "./ShapeCube";
+
+const SHAPE_DEFINITIONS: Record<
+  string,
+  (color: string, stroke: string) => React.ReactNode
+> = {
+  rectangle: (color, stroke) => (
+    <rect
+      x="2"
+      y="2"
+      width="96"
+      height="96"
+      rx="8"
+      fill={color}
+      stroke={stroke}
+      strokeWidth="2"
+      vectorEffect="non-scaling-stroke"
+    />
+  ),
+  circle: (color, stroke) => (
+    <ellipse
+      cx="50"
+      cy="50"
+      rx="48"
+      ry="48"
+      fill={color}
+      stroke={stroke}
+      strokeWidth="2"
+      vectorEffect="non-scaling-stroke"
+    />
+  ),
+  diamond: (color, stroke) => (
+    <ShapeDiamond bgColor={color} strokeColor={stroke}></ShapeDiamond>
+  ),
+  triangle: (color, stroke) => (
+    <ShapeTriangle bgColor={color} strokeColor={stroke}></ShapeTriangle>
+  ),
+  database: (color, stroke) => (
+    <ShapeDatabase bgColor={color} strokeColor={stroke}></ShapeDatabase>
+  ),
+  cube: (color, stroke) => (
+    <ShapeCube bgColor={color} strokeColor={stroke}></ShapeCube>
+  ),
+};
 
 export default function ShapeNode({ data, selected }: NodeProps<AppNode>) {
   const shape = data.shapeType || "rectangle";
@@ -23,20 +70,10 @@ export default function ShapeNode({ data, selected }: NodeProps<AppNode>) {
       />
       <div className="relative w-full h-full min-w-[80px] min-h-[80px] flex items-center justify-center">
         {shape === "diamond" ? (
-          <svg
-            className="absolute inset-0 w-full h-full overflow-visible"
-            preserveAspectRatio="none"
-            viewBox="0 0 100 100"
-          >
-            <polygon
-              points="50,0 100,50 50,100 0,50"
-              fill={bgColor}
-              stroke={strokeColor}
-              strokeWidth="2"
-              vectorEffect="non-scaling-stroke"
-              className="transition-colors duration-200"
-            />
-          </svg>
+          <ShapeDiamond
+            bgColor={bgColor}
+            strokeColor={strokeColor}
+          ></ShapeDiamond>
         ) : (
           <div
             className={`absolute inset-0 border-2 transition-colors duration-200 ${

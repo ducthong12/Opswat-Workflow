@@ -12,7 +12,13 @@ export interface NodeData extends Record<string, unknown> {
   label: string;
   description?: string;
   status?: "idle" | "running" | "success" | "error";
-  shapeType?: "rectangle" | "circle" | "diamond";
+  shapeType?:
+    | "rectangle"
+    | "circle"
+    | "diamond"
+    | "triangle"
+    | "database"
+    | "cube";
   color?: string;
 }
 
