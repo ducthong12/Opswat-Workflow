@@ -1,4 +1,4 @@
-export default function ShapeCircle({
+export default function ShapeDocument({
   id,
   color,
   stroke,
@@ -30,15 +30,24 @@ export default function ShapeCircle({
           </pattern>
         )}
       </defs> */}
-      <circle
-        cx="50"
-        cy="50"
-        r="46"
-        fill={color}
-        stroke={stroke}
-        strokeWidth="1.5"
-        vectorEffect="non-scaling-stroke"
-      />
+      <g>
+        <path
+          d="M10,2 L75,2 L95,22 L95,98 L10,98 Z"
+          //fill={imageUrl ? `url(#${patternId})` : color}
+          fill={color}
+          stroke={stroke}
+          strokeWidth="1.5"
+          vectorEffect="non-scaling-stroke"
+          className="transition-colors duration-200"
+        />
+        <path
+          d="M75,2 L75,22 L95,22"
+          fill="none"
+          stroke={stroke}
+          strokeWidth="1.5"
+          vectorEffect="non-scaling-stroke"
+        />
+      </g>
     </svg>
   );
 }

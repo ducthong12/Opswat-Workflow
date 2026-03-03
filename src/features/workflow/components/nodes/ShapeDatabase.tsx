@@ -1,30 +1,60 @@
 export default function ShapeDatabase({
-  bgColor,
-  strokeColor,
+  id,
+  color,
+  stroke,
 }: {
-  bgColor: string;
-  strokeColor: string;
+  id: string;
+  color: string;
+  stroke: string;
 }) {
   return (
     <svg
-      className="absolute inset-0 w-full h-full overflow-visible"
+      className="absolute inset-0 w-full h-full overflow-visible drop-shadow-sm"
       preserveAspectRatio="none"
       viewBox="0 0 100 100"
     >
-      <path
-        d="M5,15 C5,5 95,5 95,15 L95,85 C95,95 5,95 5,85 Z"
-        fill={bgColor}
-        stroke={strokeColor}
-        strokeWidth="2"
-        vectorEffect="non-scaling-stroke"
-      />
-      <path
-        d="M5,15 C5,25 95,25 95,15"
-        fill="none"
-        stroke={strokeColor}
-        strokeWidth="2"
-        vectorEffect="non-scaling-stroke"
-      />
+      <g className="transition-colors duration-200">
+        <ellipse
+          cx="50"
+          cy="85"
+          rx="50"
+          ry="15"
+          fill={color}
+          stroke={stroke}
+          strokeWidth="2"
+          vectorEffect="non-scaling-stroke"
+        />
+        <rect x="0" y="15" width="100" height="70" fill={color} stroke="none" />
+        <line x1="0" y1="15" x2="0" y2="85" stroke={stroke} strokeWidth="2" />
+        <line
+          x1="0"
+          y1="15"
+          x2="0"
+          y2="85"
+          stroke={stroke}
+          strokeWidth="2"
+          vectorEffect="non-scaling-stroke"
+        />
+        <line
+          x1="100"
+          y1="15"
+          x2="100"
+          y2="85"
+          stroke={stroke}
+          strokeWidth="2"
+          vectorEffect="non-scaling-stroke"
+        />
+        <ellipse
+          cx="50"
+          cy="15"
+          rx="50"
+          ry="15"
+          fill={color}
+          stroke={stroke}
+          strokeWidth="2"
+          vectorEffect="non-scaling-stroke"
+        />
+      </g>
     </svg>
   );
 }

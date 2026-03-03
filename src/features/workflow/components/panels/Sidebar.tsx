@@ -3,13 +3,75 @@ import { useState } from "react";
 import type { DragEvent } from "react";
 import {
   MousePointer2,
-  SquareSquare,
   Circle,
   Square,
   Diamond,
   X,
+  Triangle,
+  Database,
+  Box,
+  Type,
+  Heading1,
+  User,
+  FileText,
 } from "lucide-react";
 import type { WorkflowNodeType, NodeData } from "../../../../types/workflow";
+
+const SHAPE_LIST = [
+  {
+    id: "rectangle",
+    label: "",
+    btnLabel: "Rectangle",
+    shape: "rectangle",
+    icon: Square,
+  },
+  {
+    id: "circle",
+    label: "",
+    btnLabel: "Circle",
+    shape: "circle",
+    icon: Circle,
+  },
+  {
+    id: "diamond",
+    label: "",
+    btnLabel: "Decision",
+    shape: "diamond",
+    icon: Diamond,
+  },
+  {
+    id: "triangle",
+    label: "",
+    btnLabel: "Step",
+    shape: "triangle",
+    icon: Triangle,
+    className: "rotate-90",
+  },
+  {
+    id: "database",
+    label: "",
+    btnLabel: "Storage",
+    shape: "database",
+    icon: Database,
+  },
+  { id: "cube", label: "", btnLabel: "Module", shape: "cube", icon: Box },
+  { id: "text", label: "Text", btnLabel: "Text", shape: "text", icon: Type },
+  {
+    id: "heading",
+    label: "Heading",
+    btnLabel: "Heading",
+    shape: "heading",
+    icon: Heading1,
+  },
+  { id: "person", label: "", btnLabel: "Person", shape: "person", icon: User },
+  {
+    id: "document",
+    label: "",
+    btnLabel: "Document",
+    shape: "document",
+    icon: FileText,
+  },
+];
 
 export default function Sidebar() {
   const [activeMenu, setActiveMenu] = useState<"nodes" | "shapes" | null>(null);
@@ -57,19 +119,6 @@ export default function Sidebar() {
           title="Basic Shapes"
         >
           <Circle size={20} />
-          <div className="absolute right-1 bottom-1 w-1.5 h-1.5 bg-slate-400 rounded-full"></div>
-        </button>
-        <button
-          onClick={() => toggleMenu("nodes")}
-          className={`p-2.5 rounded-lg transition-colors flex items-center justify-center relative ${
-            activeMenu === "nodes"
-              ? "bg-blue-50 text-blue-600"
-              : "text-slate-500 hover:bg-slate-100"
-          }`}
-          title="Logic Nodes"
-        >
-          <SquareSquare size={20} />
-          <div className="absolute right-1 bottom-1 w-1.5 h-1.5 bg-slate-400 rounded-full"></div>
         </button>
       </div>
       {activeMenu === "shapes" && (
@@ -83,43 +132,33 @@ export default function Sidebar() {
               <X size={16} />
             </button>
           </div>
-          <div className="p-3 grid grid-cols-2 gap-2">
-            <div
-              className="flex flex-col items-center justify-center gap-2 p-3 border border-slate-200 rounded-lg cursor-grab hover:bg-slate-50 hover:border-blue-400 transition-all"
-              onDragStart={(e) =>
-                onDragStart(e, "shapeNode", "Rectangle", "rectangle")
-              }
-              draggable
-            >
-              <Square size={24} className="text-slate-600" />
-              <span className="text-[10px] font-medium text-slate-500">
-                Square
-              </span>
-            </div>
-            <div
-              className="flex flex-col items-center justify-center gap-2 p-3 border border-slate-200 rounded-lg cursor-grab hover:bg-slate-50 hover:border-blue-400 transition-all"
-              onDragStart={(e) =>
-                onDragStart(e, "shapeNode", "Circle", "circle")
-              }
-              draggable
-            >
-              <Circle size={24} className="text-slate-600" />
-              <span className="text-[10px] font-medium text-slate-500">
-                Circle
-              </span>
-            </div>
-            <div
-              className="flex flex-col items-center justify-center gap-2 p-3 border border-slate-200 rounded-lg cursor-grab hover:bg-slate-50 hover:border-blue-400 transition-all col-span-2"
-              onDragStart={(e) =>
-                onDragStart(e, "shapeNode", "Decision", "diamond")
-              }
-              draggable
-            >
-              <Diamond size={24} className="text-slate-600" />
-              <span className="text-[10px] font-medium text-slate-500">
-                Diamond
-              </span>
-            </div>
+          <div className="p-3 grid grid-cols-2 gap-2 max-h-[400px] overflow-y-auto custom-scrollbar">
+            {SHAPE_LIST.map((item) => {
+              const Icon = item.icon;
+              return (
+                <div
+                  key={item.id}
+                  className="flex flex-col items-center justify-center gap-2 p-3 border border-slate-200 rounded-lg cursor-grab hover:bg-blue-50 hover:border-blue-300 hover:shadow-sm transition-all group"
+                  onDragStart={(e) =>
+                    onDragStart(
+                      e,
+                      "shapeNode",
+                      item.label,
+                      item.shape as NodeData["shapeType"],
+                    )
+                  }
+                  draggable
+                >
+                  <Icon
+                    size={22}
+                    className={`text-slate-500 group-hover:text-blue-600 transition-colors ${item.className || ""}`}
+                  />
+                  <span className="text-[10px] font-semibold text-slate-500 group-hover:text-blue-700">
+                    {item.btnLabel}
+                  </span>
+                </div>
+              );
+            })}
           </div>
         </div>
       )}

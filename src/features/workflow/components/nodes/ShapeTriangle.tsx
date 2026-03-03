@@ -1,22 +1,25 @@
 export default function ShapeTriangle({
-  bgColor,
-  strokeColor,
+  id,
+  color,
+  stroke,
 }: {
-  bgColor: string;
-  strokeColor: string;
+  id: string;
+  color: string;
+  stroke: string;
 }) {
   return (
     <svg
-      className="absolute inset-0 w-full h-full overflow-visible"
+      className="absolute inset-0 w-full h-full overflow-visible drop-shadow-sm"
       preserveAspectRatio="none"
       viewBox="0 0 100 100"
     >
       <polygon
-        points="5,5 95,50 5,95"
-        fill={bgColor}
-        stroke={strokeColor}
+        points="0,0 100,50 0,100"
+        fill={color}
+        stroke={stroke}
         strokeWidth="2"
         vectorEffect="non-scaling-stroke"
+        className="transition-colors duration-200"
       />
     </svg>
   );

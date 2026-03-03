@@ -10,15 +10,16 @@ export type WorkflowNodeType = "shapeNode";
 
 export interface NodeData extends Record<string, unknown> {
   label: string;
-  description?: string;
-  status?: "idle" | "running" | "success" | "error";
-  shapeType?:
+  shapeType:
     | "rectangle"
     | "circle"
     | "diamond"
     | "triangle"
     | "database"
-    | "cube";
+    | "cube"
+    | "text"
+    | "heading"
+    | "person";
   color?: string;
 }
 
@@ -33,4 +34,6 @@ export interface WorkflowState {
   addNode: (node: AppNode) => void;
   updateNodeData: (nodeId: string, data: Partial<NodeData>) => void;
   clearWorkflow: () => void;
+  updateEdge: (edgeId: string, updates: Partial<Edge>) => void;
+  setWorkflow: (nodes: AppNode[], edges: Edge[]) => void;
 }

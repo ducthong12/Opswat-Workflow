@@ -3,6 +3,7 @@ import { useShallow } from "zustand/react/shallow";
 import { Settings2, Palette } from "lucide-react";
 import type { ChangeEvent } from "react";
 import { useWorkflowStore } from "../../stores/useWorkflowStore";
+import EdgeProperties from "./EdgeProperties";
 
 const PRESET_COLORS = [
   "#ffffff", // Trắng
@@ -14,14 +15,40 @@ const PRESET_COLORS = [
 ];
 
 export default function PropertiesPanel() {
-  const { nodes, updateNodeData } = useWorkflowStore(
+  const { nodes, edges, updateNodeData, updateEdge } = useWorkflowStore(
     useShallow((state) => ({
       nodes: state.nodes,
+      edges: state.edges,
       updateNodeData: state.updateNodeData,
+      updateEdge: state.updateEdge,
     })),
   );
 
   const selectedNode = nodes.find((node) => node.selected);
+  const selectedEdge = edges.find((edge) => edge.selected);
+
+  if (!selectedNode && !selectedEdge) {
+    return (
+      <aside className="w-80 border-l border-slate-200 bg-slate-50 flex flex-col shadow-sm z-10 hidden md:flex">
+        <div className="p-4 border-b border-slate-200 flex items-center gap-2 text-slate-500 bg-white">
+          <Settings2 size={18} />
+          <h2 className="text-sm font-semibold">Properties</h2>
+        </div>
+        <div className="p-8 text-center text-slate-400 text-sm flex flex-col items-center gap-3">
+          <div className="w-16 h-16 border-2 border-dashed border-slate-300 rounded-lg flex items-center justify-center">
+            <Settings2 size={24} className="text-slate-300" />
+          </div>
+          Select a node or connection on the canvas to edit.
+        </div>
+      </aside>
+    );
+  }
+
+  if (selectedEdge) {
+    return (
+      <EdgeProperties selectedEdge={selectedEdge} updateEdge={updateEdge} />
+    );
+  }
 
   if (!selectedNode) {
     return (
@@ -40,12 +67,8 @@ export default function PropertiesPanel() {
     );
   }
 
-  const handleLabelChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleLabelChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     updateNodeData(selectedNode.id, { label: e.target.value });
-  };
-
-  const handleDescriptionChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    updateNodeData(selectedNode.id, { description: e.target.value });
   };
 
   const handleColorChange = (color: string) => {
@@ -59,12 +82,21 @@ export default function PropertiesPanel() {
           <Settings2 size={18} />
           <h2 className="text-sm font-bold">Node Settings</h2>
         </div>
-        <span className="text-xs font-mono bg-slate-100 text-slate-500 px-2 py-1 rounded border border-slate-200">
-          ID: {selectedNode.id.split("-")[1] || selectedNode.id}
-        </span>
       </div>
 
       <div className="p-4 flex flex-col gap-5">
+        <div className="flex flex-col gap-1.5">
+          <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+            Node Label
+          </label>
+          <textarea
+            value={selectedNode.data.label || ""}
+            onChange={handleLabelChange}
+            rows={3}
+            className="w-full px-3 py-2 text-sm text-slate-800 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none shadow-sm"
+            placeholder="Enter node label..."
+          />
+        </div>
         <div className="flex flex-col gap-2 p-3 bg-slate-50 border border-slate-100 rounded-lg">
           <div className="flex items-center gap-2 text-slate-600 mb-1">
             <Palette size={14} />
@@ -92,30 +124,6 @@ export default function PropertiesPanel() {
               );
             })}
           </div>
-        </div>
-        <div className="flex flex-col gap-1.5">
-          <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-            Node Label
-          </label>
-          <input
-            type="text"
-            value={selectedNode.data.label}
-            onChange={handleLabelChange}
-            className="w-full px-3 py-2 text-sm text-slate-800 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all shadow-sm"
-            placeholder="Enter node label..."
-          />
-        </div>
-        <div className="flex flex-col gap-1.5">
-          <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-            Description
-          </label>
-          <textarea
-            value={selectedNode.data.description || ""}
-            onChange={handleDescriptionChange}
-            rows={3}
-            className="w-full px-3 py-2 text-sm text-slate-800 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none shadow-sm"
-            placeholder="Enter node description..."
-          />
         </div>
       </div>
     </aside>

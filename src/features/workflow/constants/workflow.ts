@@ -1,0 +1,18 @@
+export const WORKFLOW_CONFIG = {
+  NODE: {
+    MIN_WIDTH: 30,
+    MIN_HEIGHT: 30,
+    RESIZE_DOT_SIZE: 8,
+    RESIZE_BORDER_SIZE: 2,
+    RESIZE_BORDER_RADIUS: 2,
+  },
+  EDGE: {
+    STROKE_WIDTH: 1.5,
+    INTERACTION_WIDTH: 25,
+    ARROW_SIZE: 12,
+  },
+  HANDLE: {
+    SIZE: 8,
+    OFFSET: -4,
+  },
+};

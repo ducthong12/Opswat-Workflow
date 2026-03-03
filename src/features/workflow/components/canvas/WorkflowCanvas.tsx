@@ -6,6 +6,7 @@ import {
   MiniMap,
   ReactFlow,
   useReactFlow,
+  type DefaultEdgeOptions,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import type { DragEvent } from "react";
@@ -18,9 +19,18 @@ import type {
 } from "../../../../types/workflow";
 import { useWorkflowStore } from "../../stores/useWorkflowStore";
 import ShapeNode from "../nodes/ShapeNode";
+import { WORKFLOW_CONFIG } from "../../constants/workflow";
 
 const nodeTypes = {
   shapeNode: ShapeNode,
+};
+
+const defaultEdgeOptions: DefaultEdgeOptions = {
+  style: { strokeWidth: WORKFLOW_CONFIG.EDGE.STROKE_WIDTH, stroke: "#94a3b8" },
+  type: "default",
+  focusable: true,
+  selectable: true,
+  interactionWidth: 25,
 };
 
 export default function WorkflowCanvas() {
@@ -72,8 +82,6 @@ export default function WorkflowCanvas() {
         position,
         data: {
           label,
-          description: "Configure details in the right panel",
-          status: "idle",
           shapeType,
         },
       };
@@ -96,7 +104,9 @@ export default function WorkflowCanvas() {
         onDrop={onDrop}
         onDragOver={onDragOver}
         nodeTypes={nodeTypes}
+        deleteKeyCode={["Backspace", "Delete"]}
         fitView
+        defaultEdgeOptions={defaultEdgeOptions}
       >
         <Background
           variant={BackgroundVariant.Dots}
@@ -107,30 +117,36 @@ export default function WorkflowCanvas() {
         <Controls />
         <MiniMap
           nodeColor={(n) => {
-            if (n.type === "shapeNode")
-              return (n.data.color as string) || "#ffffff";
-            if (n.type === "taskNode") return "#eff6ff";
-            if (n.type === "conditionNode") return "#fffbeb";
-            return "#ffffff";
-          }}
-          nodeStrokeColor={(n) => {
-            if (n.type === "shapeNode")
-              return n.selected ? "#3b82f6" : "#94a3b8";
-            if (n.type === "taskNode")
-              return n.selected ? "#3b82f6" : "#bfdbfe";
-            if (n.type === "conditionNode")
-              return n.selected ? "#f59e0b" : "#fde68a";
+            if (n.selected) return "#3b82f6";
+
+            if (n.type === "shapeNode") {
+              const shape = n.data.shapeType;
+
+              if (shape === "heading") return "#ffffff";
+              if (shape === "text") return "#ffffff";
+
+              const color = n.data.color as string;
+              return !color || color === "#ffffff" ? "#cbd5e1" : color;
+            }
+
             return "#cbd5e1";
           }}
+          nodeStrokeWidth={0}
           nodeClassName={(n) => {
-            if (n.type === "shapeNode" && n.data.shapeType === "diamond")
-              return "minimap-diamond";
-            else if (n.type === "shapeNode" && n.data.shapeType === "circle")
-              return "minimap-circle";
-            else return "";
+            if (n.type === "shapeNode") {
+              const shape = n.data.shapeType;
+
+              if (shape === "circle") return "minimap-circle";
+              if (shape === "diamond") return "minimap-diamond";
+              if (shape === "triangle") return "minimap-triangle";
+              if (shape === "database") return "minimap-database";
+              if (shape === "document") return "minimap-document";
+              if (shape === "person") return "minimap-person";
+            }
+            return "";
           }}
           maskColor="rgba(241, 245, 249, 0.7)"
-          className="border border-slate-200 rounded-lg shadow-sm bg-white"
+          className="border-2 border-slate-200 rounded-lg shadow-md bg-white overflow-hidden"
         />
       </ReactFlow>
     </div>
