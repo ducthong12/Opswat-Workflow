@@ -15,8 +15,8 @@ export default function ShapeCube({
       preserveAspectRatio="none"
       viewBox="0 0 100 100"
     >
-      <defs>
-        {imageUrl && (
+      {imageUrl && (
+        <defs>
           <pattern
             id={`img-pattern-${id}`}
             patternUnits="userSpaceOnUse"
@@ -32,8 +32,8 @@ export default function ShapeCube({
               preserveAspectRatio="xMidYMid slice"
             />
           </pattern>
-        )}
-      </defs>
+        </defs>
+      )}
       <g>
         <path
           d="M0,30 L30,0 L100,0 L100,70 L70,100 L0,100 Z"

@@ -12,12 +12,12 @@ import { MarkerType, type Edge } from "@xyflow/react";
 import { WORKFLOW_CONFIG } from "../../constants/workflow";
 
 const PRESET_COLORS = [
-  "#94a3b8", // Xám (Mặc định)
-  "#ef4444", // Đỏ
-  "#eab308", // Vàng
-  "#22c55e", // Xanh lá
-  "#3b82f6", // Xanh dương
-  "#a855f7", // Tím
+  "#94a3b8",
+  "#ef4444",
+  "#eab308",
+  "#22c55e",
+  "#3b82f6",
+  "#a855f7",
 ];
 
 interface EdgePropertiesProps {
@@ -29,7 +29,8 @@ export default function EdgeProperties({
   selectedEdge,
   updateEdge,
 }: EdgePropertiesProps) {
-  const edgeColor = selectedEdge.style?.stroke || "#94a3b8";
+  const edgeColor =
+    selectedEdge.style?.stroke || WORKFLOW_CONFIG.EDGE.STROKE_COLOR;
   const isDashed = selectedEdge.style?.strokeDasharray === "5 5";
   const hasMarkerStart = !!selectedEdge.markerStart;
   const hasMarkerEnd = !!selectedEdge.markerEnd;

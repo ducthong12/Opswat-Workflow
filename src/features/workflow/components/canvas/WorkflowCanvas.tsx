@@ -25,7 +25,10 @@ const nodeTypes = {
 };
 
 const defaultEdgeOptions: DefaultEdgeOptions = {
-  style: { strokeWidth: WORKFLOW_CONFIG.EDGE.STROKE_WIDTH, stroke: "#94a3b8" },
+  style: {
+    strokeWidth: WORKFLOW_CONFIG.EDGE.STROKE_WIDTH,
+    stroke: WORKFLOW_CONFIG.EDGE.STROKE_COLOR,
+  },
   type: "default",
   focusable: true,
   selectable: true,

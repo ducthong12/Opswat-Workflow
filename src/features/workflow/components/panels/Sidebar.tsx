@@ -66,13 +66,21 @@ const SHAPE_LIST = [
     icon: Box,
     allowImage: true,
   },
-  { id: "text", label: "Text", btnLabel: "Text", shape: "text", icon: Type },
+  {
+    id: "text",
+    label: "Text",
+    btnLabel: "Text",
+    shape: "text",
+    icon: Type,
+    allowImage: false,
+  },
   {
     id: "heading",
     label: "Heading",
     btnLabel: "Heading",
     shape: "heading",
     icon: Heading1,
+    allowImage: false,
   },
   {
     id: "person",
@@ -88,6 +96,7 @@ const SHAPE_LIST = [
     btnLabel: "Document",
     shape: "document",
     icon: FileText,
+    allowImage: false,
   },
 ];
 
@@ -98,10 +107,15 @@ export default function Sidebar() {
     event: DragEvent,
     nodeType: WorkflowNodeType,
     label: string,
+    allowImage: boolean = false,
     shapeType?: NodeData["shapeType"],
   ) => {
     event.dataTransfer.setData("application/reactflow/type", nodeType);
     event.dataTransfer.setData("application/reactflow/label", label);
+    event.dataTransfer.setData(
+      "application/reactflow/allowImage",
+      String(allowImage),
+    );
     if (shapeType) {
       event.dataTransfer.setData("application/reactflow/shape", shapeType);
     }
@@ -162,6 +176,7 @@ export default function Sidebar() {
                       e,
                       "shapeNode",
                       item.label,
+                      item.allowImage,
                       item.shape as NodeData["shapeType"],
                     )
                   }

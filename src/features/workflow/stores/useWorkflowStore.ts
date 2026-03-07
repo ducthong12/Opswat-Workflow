@@ -1,4 +1,3 @@
-// src/features/workflow/stores/useWorkflowStore.ts
 import { create } from "zustand";
 import type { AppNode, NodeData, WorkflowState } from "../../../types/workflow";
 import {
@@ -40,10 +39,10 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
             type: MarkerType.ArrowClosed,
             width: WORKFLOW_CONFIG.EDGE.ARROW_SIZE,
             height: WORKFLOW_CONFIG.EDGE.ARROW_SIZE,
-            color: "#94a3b8",
+            color: WORKFLOW_CONFIG.EDGE.STROKE_COLOR,
           },
           style: {
-            stroke: "#94a3b8",
+            stroke: WORKFLOW_CONFIG.EDGE.STROKE_COLOR,
             strokeWidth: WORKFLOW_CONFIG.EDGE.STROKE_WIDTH,
           },
         },

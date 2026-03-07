@@ -102,7 +102,9 @@ const SHAPE_DEFINITIONS: Record<string, ShapeDefinition> = {
 export default function ShapeNode({ id, data, selected }: NodeProps<AppNode>) {
   const shape = data.shapeType || "rectangle";
   const color = (data.color as string) || "#ffffff";
-  const stroke = selected ? "#3b82f6" : "#94a3b8";
+  const stroke = selected
+    ? WORKFLOW_CONFIG.EDGE.STROKE_COLOR_SELECTED
+    : WORKFLOW_CONFIG.EDGE.STROKE_COLOR;
 
   const currentShape = SHAPE_DEFINITIONS[shape] || SHAPE_DEFINITIONS.rectangle;
   const offsets = currentShape.handleOffsets || {};
@@ -116,7 +118,7 @@ export default function ShapeNode({ id, data, selected }: NodeProps<AppNode>) {
   return (
     <>
       <NodeResizer
-        color="#3b82f6"
+        color={WORKFLOW_CONFIG.EDGE.STROKE_COLOR_SELECTED}
         isVisible={selected}
         minWidth={WORKFLOW_CONFIG.NODE.MIN_WIDTH}
         minHeight={WORKFLOW_CONFIG.NODE.MIN_HEIGHT}

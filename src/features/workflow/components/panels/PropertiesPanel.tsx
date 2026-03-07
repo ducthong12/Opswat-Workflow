@@ -1,4 +1,3 @@
-// src/features/workflow/components/panels/PropertiesPanel.tsx
 import { useShallow } from "zustand/react/shallow";
 import { Settings2, Palette, ImageIcon, X, Upload } from "lucide-react";
 import type { ChangeEvent } from "react";
@@ -6,12 +5,12 @@ import { useWorkflowStore } from "../../stores/useWorkflowStore";
 import EdgeProperties from "./EdgeProperties";
 
 const PRESET_COLORS = [
-  "#ffffff", // Trắng
-  "#fecaca", // Đỏ nhạt
-  "#fef08a", // Vàng nhạt
-  "#bbf7d0", // Xanh lá nhạt
-  "#bfdbfe", // Xanh dương nhạt
-  "#e9d5ff", // Tím nhạt
+  "#ffffff",
+  "#fecaca",
+  "#fef08a",
+  "#bbf7d0",
+  "#bfdbfe",
+  "#e9d5ff",
 ];
 
 export default function PropertiesPanel() {
@@ -113,49 +112,53 @@ export default function PropertiesPanel() {
             placeholder="Enter node label..."
           />
         </div>
-        <div className="flex flex-col gap-2 p-3 bg-slate-50 border border-slate-200 rounded-lg">
-          <div className="flex items-center gap-2 text-slate-600 mb-1">
-            <ImageIcon size={14} />
-            <label className="text-xs font-bold uppercase">Image Content</label>
-          </div>
-          <div className="flex items-center justify-between text-slate-600 mb-1">
-            {selectedNode.data.imageUrl && (
-              <button
-                onClick={() =>
-                  updateNodeData(selectedNode!.id, { imageUrl: undefined })
-                }
-                className="text-red-500 hover:text-red-700 transition-colors"
-              >
-                <X size={14} />
-              </button>
-            )}
-            {selectedNode?.data.imageUrl ? (
-              <div className="relative w-full h-32 rounded-md overflow-hidden border border-slate-200 bg-white">
-                <img
-                  src={selectedNode.data.imageUrl}
-                  alt="Preview"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            ) : (
-              <label className="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-slate-300 rounded-lg cursor-pointer hover:bg-blue-50 hover:border-blue-400 transition-all group">
-                <Upload
-                  size={20}
-                  className="text-slate-400 group-hover:text-blue-500 mb-1"
-                />
-                <span className="text-[10px] text-slate-500 group-hover:text-blue-600 font-medium">
-                  Click to upload image
-                </span>
-                <input
-                  type="file"
-                  className="hidden"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                />
+        {selectedNode.data.allowImage && (
+          <div className="flex flex-col gap-2 p-3 bg-slate-50 border border-slate-200 rounded-lg">
+            <div className="flex items-center gap-2 text-slate-600 mb-1">
+              <ImageIcon size={14} />
+              <label className="text-xs font-bold uppercase">
+                Image Content
               </label>
-            )}
+            </div>
+            <div className="flex items-center justify-between text-slate-600 mb-1">
+              {selectedNode.data.imageUrl && (
+                <button
+                  onClick={() =>
+                    updateNodeData(selectedNode!.id, { imageUrl: undefined })
+                  }
+                  className="text-red-500 hover:text-red-700 transition-colors"
+                >
+                  <X size={14} />
+                </button>
+              )}
+              {selectedNode?.data.imageUrl ? (
+                <div className="relative w-full h-32 rounded-md overflow-hidden border border-slate-200 bg-white">
+                  <img
+                    src={selectedNode.data.imageUrl}
+                    alt="Preview"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              ) : (
+                <label className="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-slate-300 rounded-lg cursor-pointer hover:bg-blue-50 hover:border-blue-400 transition-all group">
+                  <Upload
+                    size={20}
+                    className="text-slate-400 group-hover:text-blue-500 mb-1"
+                  />
+                  <span className="text-[10px] text-slate-500 group-hover:text-blue-600 font-medium">
+                    Click to upload image
+                  </span>
+                  <input
+                    type="file"
+                    className="hidden"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                  />
+                </label>
+              )}
+            </div>
           </div>
-        </div>
+        )}
         <div className="flex flex-col gap-2 p-3 bg-slate-50 border border-slate-100 rounded-lg">
           <div className="flex items-center gap-2 text-slate-600 mb-1">
             <Palette size={14} />
