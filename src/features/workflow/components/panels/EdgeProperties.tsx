@@ -11,15 +11,6 @@ import {
 import { MarkerType, type Edge } from "@xyflow/react";
 import { WORKFLOW_CONFIG } from "../../constants/workflow";
 
-const PRESET_COLORS = [
-  "#94a3b8",
-  "#ef4444",
-  "#eab308",
-  "#22c55e",
-  "#3b82f6",
-  "#a855f7",
-];
-
 interface EdgePropertiesProps {
   selectedEdge: Edge;
   updateEdge: (id: string, updates: Partial<Edge>) => void;
@@ -173,21 +164,21 @@ export default function EdgeProperties({
             </label>
           </div>
           <div className="flex items-center gap-2 flex-wrap">
-            {PRESET_COLORS.map((color) => (
+            {WORKFLOW_CONFIG.EDGE.COLORS.PRESETS.map((color) => (
               <button
-                key={color}
+                key={color.value}
                 onClick={() =>
                   updateEdge(selectedEdge.id, {
-                    style: { ...selectedEdge.style, stroke: color },
+                    style: { ...selectedEdge.style, stroke: color.value },
                   })
                 }
                 className={`w-8 h-8 rounded-full border-2 transition-all ${
-                  edgeColor === color
+                  edgeColor === color.value
                     ? "border-slate-800 scale-110 shadow-md"
                     : "border-slate-300 hover:scale-110 hover:shadow-sm"
                 }`}
-                style={{ backgroundColor: color }}
-                title={color}
+                style={{ backgroundColor: color.value }}
+                title={color.label}
               />
             ))}
           </div>

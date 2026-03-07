@@ -3,15 +3,7 @@ import { Settings2, Palette, ImageIcon, X, Upload } from "lucide-react";
 import type { ChangeEvent } from "react";
 import { useWorkflowStore } from "../../stores/useWorkflowStore";
 import EdgeProperties from "./EdgeProperties";
-
-const PRESET_COLORS = [
-  "#ffffff",
-  "#fecaca",
-  "#fef08a",
-  "#bbf7d0",
-  "#bfdbfe",
-  "#e9d5ff",
-];
+import { WORKFLOW_CONFIG } from "../../constants/workflow";
 
 export default function PropertiesPanel() {
   const { nodes, edges, updateNodeData, updateEdge } = useWorkflowStore(
@@ -116,47 +108,46 @@ export default function PropertiesPanel() {
           <div className="flex flex-col gap-2 p-3 bg-slate-50 border border-slate-200 rounded-lg">
             <div className="flex items-center gap-2 text-slate-600 mb-1">
               <ImageIcon size={14} />
-              <label className="text-xs font-bold uppercase">
+              <label className="text-xs font-bold uppercase tracking-wider">
                 Image Content
               </label>
             </div>
-            <div className="flex items-center justify-between text-slate-600 mb-1">
-              {selectedNode.data.imageUrl && (
+            {selectedNode.data.imageUrl ? (
+              <div className="relative w-full h-32 rounded-md overflow-hidden border border-slate-200 bg-white group shadow-sm">
+                <img
+                  src={selectedNode.data.imageUrl}
+                  alt="Preview"
+                  className="w-full h-full object-cover"
+                />
                 <button
                   onClick={() =>
                     updateNodeData(selectedNode!.id, { imageUrl: undefined })
                   }
-                  className="text-red-500 hover:text-red-700 transition-colors"
+                  className="absolute top-1.5 right-1.5 p-1 bg-white/80 text-slate-600 rounded-full 
+                     hover:bg-red-500 hover:text-white transition-all 
+                     opacity-0 group-hover:opacity-100 shadow-sm backdrop-blur-sm z-10"
+                  title="Remove image"
                 >
-                  <X size={14} />
+                  <X size={14} strokeWidth={2.5} />
                 </button>
-              )}
-              {selectedNode?.data.imageUrl ? (
-                <div className="relative w-full h-32 rounded-md overflow-hidden border border-slate-200 bg-white">
-                  <img
-                    src={selectedNode.data.imageUrl}
-                    alt="Preview"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              ) : (
-                <label className="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-slate-300 rounded-lg cursor-pointer hover:bg-blue-50 hover:border-blue-400 transition-all group">
-                  <Upload
-                    size={20}
-                    className="text-slate-400 group-hover:text-blue-500 mb-1"
-                  />
-                  <span className="text-[10px] text-slate-500 group-hover:text-blue-600 font-medium">
-                    Click to upload image
-                  </span>
-                  <input
-                    type="file"
-                    className="hidden"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                  />
-                </label>
-              )}
-            </div>
+              </div>
+            ) : (
+              <label className="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-slate-300 rounded-lg cursor-pointer hover:bg-blue-50 hover:border-blue-400 transition-all group">
+                <Upload
+                  size={20}
+                  className="text-slate-400 group-hover:text-blue-500 mb-1"
+                />
+                <span className="text-[10px] text-slate-500 group-hover:text-blue-600 font-medium">
+                  Click to upload
+                </span>
+                <input
+                  type="file"
+                  className="hidden"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                />
+              </label>
+            )}
           </div>
         )}
         <div className="flex flex-col gap-2 p-3 bg-slate-50 border border-slate-100 rounded-lg">
@@ -167,21 +158,22 @@ export default function PropertiesPanel() {
             </label>
           </div>
           <div className="flex items-center gap-2 flex-wrap">
-            {PRESET_COLORS.map((color) => {
+            {WORKFLOW_CONFIG.NODE.COLORS.PRESETS.map((color) => {
               const isActive =
-                selectedNode.data.color === color ||
-                (!selectedNode.data.color && color === "#ffffff");
+                selectedNode.data.color === color.value ||
+                (!selectedNode.data.color &&
+                  color.value === WORKFLOW_CONFIG.NODE.COLORS.DEFAULT);
               return (
                 <button
-                  key={color}
-                  onClick={() => handleColorChange(color)}
+                  key={color.value}
+                  onClick={() => handleColorChange(color.value)}
                   className={`w-8 h-8 rounded-full border-2 transition-all ${
                     isActive
                       ? "border-blue-500 scale-110 shadow-md"
                       : "border-slate-300 hover:scale-110 hover:shadow-sm"
                   }`}
-                  style={{ backgroundColor: color }}
-                  title={color}
+                  style={{ backgroundColor: color.value }}
+                  title={color.label}
                 />
               );
             })}
