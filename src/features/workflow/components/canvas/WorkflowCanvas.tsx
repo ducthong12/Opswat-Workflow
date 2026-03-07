@@ -1,4 +1,3 @@
-// src/features/workflow/components/canvas/WorkflowCanvas.tsx
 import {
   Background,
   BackgroundVariant,
@@ -33,6 +32,24 @@ const defaultEdgeOptions: DefaultEdgeOptions = {
   interactionWidth: 25,
 };
 
+const getMiniMapNodeColor = (n: any) => {
+  if (n.selected) return "#3b82f6";
+  if (n.type !== "shapeNode") return "#cbd5e1";
+
+  const { shapeType, color } = n.data;
+
+  if (shapeType === "heading" || shapeType === "text") return "#475569";
+
+  return !color || color === "#ffffff" ? "#cbd5e1" : color;
+};
+
+const getMiniMapNodeClass = (n: any) => {
+  if (n.type === "shapeNode" && n.data.shapeType) {
+    return `minimap-shape-${n.data.shapeType}`;
+  }
+  return "";
+};
+
 export default function WorkflowCanvas() {
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
   const { screenToFlowPosition } = useReactFlow();
@@ -58,33 +75,40 @@ export default function WorkflowCanvas() {
     (event: DragEvent) => {
       event.preventDefault();
 
-      // Get node type and label from the drag event
       const type = event.dataTransfer.getData(
         "application/reactflow/type",
       ) as WorkflowNodeType;
-      const label = event.dataTransfer.getData("application/reactflow/label");
-      const shapeType =
-        (event.dataTransfer.getData(
-          "application/reactflow/shape",
-        ) as NodeData["shapeType"]) || undefined;
-
       if (!type) return;
+
+      const label = event.dataTransfer.getData("application/reactflow/label");
+      const shapeType = event.dataTransfer.getData(
+        "application/reactflow/shape",
+      ) as NodeData["shapeType"];
+      const allowImage =
+        event.dataTransfer.getData("application/reactflow/allowImage") ===
+        "true";
 
       const position = screenToFlowPosition({
         x: event.clientX,
         y: event.clientY,
       });
 
-      // Add new node to the store
       const newNode: AppNode = {
         id: `node-${Date.now()}`,
         type,
         position,
+        style: {
+          width: WORKFLOW_CONFIG.NODE.DEFAULT_WIDTH,
+          height: WORKFLOW_CONFIG.NODE.DEFAULT_HEIGHT,
+        },
         data: {
           label,
           shapeType,
+          allowImage,
+          color: "#ffffff",
         },
       };
+
       addNode(newNode);
     },
     [screenToFlowPosition, addNode],
@@ -104,9 +128,10 @@ export default function WorkflowCanvas() {
         onDrop={onDrop}
         onDragOver={onDragOver}
         nodeTypes={nodeTypes}
+        defaultEdgeOptions={defaultEdgeOptions}
         deleteKeyCode={["Backspace", "Delete"]}
         fitView
-        defaultEdgeOptions={defaultEdgeOptions}
+        onlyRenderVisibleElements={true}
       >
         <Background
           variant={BackgroundVariant.Dots}
@@ -114,39 +139,16 @@ export default function WorkflowCanvas() {
           size={1}
           color="#cbd5e1"
         />
-        <Controls />
+        <Controls showInteractive={false} />
+
         <MiniMap
-          nodeColor={(n) => {
-            if (n.selected) return "#3b82f6";
-
-            if (n.type === "shapeNode") {
-              const shape = n.data.shapeType;
-
-              if (shape === "heading") return "#ffffff";
-              if (shape === "text") return "#ffffff";
-
-              const color = n.data.color as string;
-              return !color || color === "#ffffff" ? "#cbd5e1" : color;
-            }
-
-            return "#cbd5e1";
-          }}
+          nodeColor={getMiniMapNodeColor}
+          nodeClassName={getMiniMapNodeClass}
           nodeStrokeWidth={0}
-          nodeClassName={(n) => {
-            if (n.type === "shapeNode") {
-              const shape = n.data.shapeType;
-
-              if (shape === "circle") return "minimap-circle";
-              if (shape === "diamond") return "minimap-diamond";
-              if (shape === "triangle") return "minimap-triangle";
-              if (shape === "database") return "minimap-database";
-              if (shape === "document") return "minimap-document";
-              if (shape === "person") return "minimap-person";
-            }
-            return "";
-          }}
           maskColor="rgba(241, 245, 249, 0.7)"
           className="border-2 border-slate-200 rounded-lg shadow-md bg-white overflow-hidden"
+          zoomable
+          pannable
         />
       </ReactFlow>
     </div>

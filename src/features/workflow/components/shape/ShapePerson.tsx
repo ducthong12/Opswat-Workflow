@@ -1,9 +1,7 @@
 export default function ShapePerson({
-  id,
   color,
   stroke,
 }: {
-  id: string;
   color: string;
   stroke: string;
 }) {

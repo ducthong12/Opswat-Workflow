@@ -1,4 +1,3 @@
-// src/features/workflow/components/panels/Sidebar.tsx
 import { useState } from "react";
 import type { DragEvent } from "react";
 import {
@@ -24,6 +23,7 @@ const SHAPE_LIST = [
     btnLabel: "Rectangle",
     shape: "rectangle",
     icon: Square,
+    allowImage: true,
   },
   {
     id: "circle",
@@ -31,6 +31,7 @@ const SHAPE_LIST = [
     btnLabel: "Circle",
     shape: "circle",
     icon: Circle,
+    allowImage: true,
   },
   {
     id: "diamond",
@@ -38,6 +39,7 @@ const SHAPE_LIST = [
     btnLabel: "Decision",
     shape: "diamond",
     icon: Diamond,
+    allowImage: true,
   },
   {
     id: "triangle",
@@ -46,6 +48,7 @@ const SHAPE_LIST = [
     shape: "triangle",
     icon: Triangle,
     className: "rotate-90",
+    allowImage: true,
   },
   {
     id: "database",
@@ -53,8 +56,16 @@ const SHAPE_LIST = [
     btnLabel: "Storage",
     shape: "database",
     icon: Database,
+    allowImage: true,
   },
-  { id: "cube", label: "", btnLabel: "Module", shape: "cube", icon: Box },
+  {
+    id: "cube",
+    label: "",
+    btnLabel: "Module",
+    shape: "cube",
+    icon: Box,
+    allowImage: true,
+  },
   { id: "text", label: "Text", btnLabel: "Text", shape: "text", icon: Type },
   {
     id: "heading",
@@ -63,7 +74,14 @@ const SHAPE_LIST = [
     shape: "heading",
     icon: Heading1,
   },
-  { id: "person", label: "", btnLabel: "Person", shape: "person", icon: User },
+  {
+    id: "person",
+    label: "",
+    btnLabel: "Person",
+    shape: "person",
+    icon: User,
+    allowImage: false,
+  },
   {
     id: "document",
     label: "",

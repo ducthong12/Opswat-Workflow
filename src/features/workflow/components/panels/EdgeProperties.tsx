@@ -1,4 +1,3 @@
-// src/features/workflow/components/panels/EdgeProperties.tsx
 import {
   Settings2,
   Palette,

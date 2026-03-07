@@ -21,6 +21,7 @@ export interface NodeData extends Record<string, unknown> {
     | "heading"
     | "person";
   color?: string;
+  imageUrl?: string;
 }
 
 export type AppNode = Node<NodeData, WorkflowNodeType>;

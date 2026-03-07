@@ -1,4 +1,3 @@
-// src/features/workflow/components/nodes/ShapeText.tsx
 import { useEffect, useRef } from "react";
 import { useWorkflowStore } from "../../stores/useWorkflowStore";
 

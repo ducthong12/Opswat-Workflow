@@ -1,17 +1,19 @@
 import { Handle, Position, NodeResizer, type NodeProps } from "@xyflow/react";
 import type { AppNode } from "../../../../types/workflow";
-import ShapeDiamond from "./ShapeDiamond";
-import ShapeTriangle from "./ShapeTriangle";
-import ShapeDatabase from "./ShapeDatabase";
-import ShapeCube from "./ShapeCube";
-import ShapeRectangle from "./ShapeRectangle";
-import ShapeCircle from "./ShapeCircle";
 import type { CSSProperties, ReactNode } from "react";
 import { WORKFLOW_CONFIG } from "../../constants/workflow";
-import ShapePerson from "./ShapePerson";
-import ShapeDocument from "./ShapeDocument";
-import ShapeText from "./ShapeText";
-import ShapeHeading from "./ShapeHeading";
+import {
+  ShapeCircle,
+  ShapeDatabase,
+  ShapeDiamond,
+  ShapeDocument,
+  ShapePerson,
+  ShapeRectangle,
+  ShapeTriangle,
+  ShapeCube,
+  ShapeText,
+  ShapeHeading,
+} from "../shape";
 
 interface ShapeDefinition {
   render: (props: {
@@ -19,6 +21,7 @@ interface ShapeDefinition {
     color: string;
     stroke: string;
     label: string;
+    imageUrl?: string;
   }) => ReactNode;
   handleOffsets?: {
     top?: CSSProperties;
@@ -30,23 +33,33 @@ interface ShapeDefinition {
 
 const SHAPE_DEFINITIONS: Record<string, ShapeDefinition> = {
   rectangle: {
-    render: ({ id, color, stroke }) => (
-      <ShapeRectangle id={id} color={color} stroke={stroke} />
+    render: ({ id, color, stroke, imageUrl }) => (
+      <ShapeRectangle
+        id={id}
+        color={color}
+        stroke={stroke}
+        imageUrl={imageUrl}
+      />
     ),
   },
   circle: {
-    render: ({ id, color, stroke }) => (
-      <ShapeCircle id={id} color={color} stroke={stroke} />
+    render: ({ id, color, stroke, imageUrl }) => (
+      <ShapeCircle id={id} color={color} stroke={stroke} imageUrl={imageUrl} />
     ),
   },
   diamond: {
-    render: ({ id, color, stroke }) => (
-      <ShapeDiamond id={id} color={color} stroke={stroke} />
+    render: ({ id, color, stroke, imageUrl }) => (
+      <ShapeDiamond id={id} color={color} stroke={stroke} imageUrl={imageUrl} />
     ),
   },
   triangle: {
-    render: ({ id, color, stroke }) => (
-      <ShapeTriangle id={id} color={color} stroke={stroke} />
+    render: ({ id, color, stroke, imageUrl }) => (
+      <ShapeTriangle
+        id={id}
+        color={color}
+        stroke={stroke}
+        imageUrl={imageUrl}
+      />
     ),
     handleOffsets: {
       top: { top: "25%" },
@@ -54,13 +67,18 @@ const SHAPE_DEFINITIONS: Record<string, ShapeDefinition> = {
     },
   },
   database: {
-    render: ({ id, color, stroke }) => (
-      <ShapeDatabase id={id} color={color} stroke={stroke} />
+    render: ({ id, color, stroke, imageUrl }) => (
+      <ShapeDatabase
+        id={id}
+        color={color}
+        stroke={stroke}
+        imageUrl={imageUrl}
+      />
     ),
   },
   cube: {
-    render: ({ id, color, stroke }) => (
-      <ShapeCube id={id} color={color} stroke={stroke} />
+    render: ({ id, color, stroke, imageUrl }) => (
+      <ShapeCube id={id} color={color} stroke={stroke} imageUrl={imageUrl} />
     ),
   },
   text: {
@@ -70,8 +88,8 @@ const SHAPE_DEFINITIONS: Record<string, ShapeDefinition> = {
     render: ({ id, label }) => <ShapeHeading id={id} label={label} />,
   },
   person: {
-    render: ({ id, color, stroke }) => (
-      <ShapePerson id={id} color={color} stroke={stroke} />
+    render: ({ color, stroke }) => (
+      <ShapePerson color={color} stroke={stroke} />
     ),
   },
   document: {
@@ -121,6 +139,7 @@ export default function ShapeNode({ id, data, selected }: NodeProps<AppNode>) {
           color: color,
           stroke: stroke,
           label: data.label,
+          imageUrl: data.imageUrl,
         })}
         {!isTextType && data.label && (
           <div className="absolute top-[calc(100%+8px)] left-1/2 -translate-x-1/2 z-20 w-[160%] pointer-events-none">
